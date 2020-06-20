@@ -46,7 +46,7 @@ function init(bundle, parent, options = {}) {
   // Render your app content to the default cylinder surface
   r360.renderToLocation(
     r360.createRoot('CryptoModel', { /* initial props */ }),
-    new Location([0,0,-1])
+    new Location([0,0,-1.5])
   );
 
   // Load the initial environment

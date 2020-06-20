@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-360';
+import { Text, View, Animated } from 'react-360';
 import { styles } from '../styles/stylesheet'
 import { Provider, connect } from 'react-redux'
 import { store } from './RightPanel'
@@ -13,7 +13,8 @@ class Panel extends React.Component {
         low: '',
         volumefrom: '',
         volumeto: ''
-      }
+      },
+      fade: new Animated.Value(0)
     }
 
     fetchCryptoData = () => {
@@ -34,6 +35,14 @@ class Panel extends React.Component {
   
     componentDidMount() {
       this.fetchCryptoData()
+
+      Animated.timing(
+        this.state.fade,
+        {
+          toValue: 1,
+          duration: 1500,
+        }
+      ).start()
     }
 
     componentDidUpdate(prevProps){
@@ -42,8 +51,9 @@ class Panel extends React.Component {
     }
   
     render() {
+      let { fade } = this.state
       return(
-        <View style={styles.wrapper}>
+        <Animated.View style={[styles.wrapper, {opacity: fade}]}>
           <View style={styles.header}>
             <Text style={styles.textSize}>Crypto</Text>
           </View>
@@ -56,7 +66,7 @@ class Panel extends React.Component {
             <Text>Volume From: {this.state.cryptocurrency.volumefrom}</Text>
             <Text>Volume To: {this.state.cryptocurrency.volumeto}</Text>
           </View>
-        </View>
+        </Animated.View>
       );
     }
 }

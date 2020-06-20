@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, VrButton } from 'react-360';
+import { Text, View, VrButton, Animated } from 'react-360';
 import { styles } from '../styles/stylesheet'
 import { Provider, connect } from 'react-redux'
 import configureStore from '../store/configureStore'
@@ -18,7 +18,7 @@ class Panel extends React.Component {
         blockTime: '',
         blockReward: ''
       },
-      crypto: ''
+      fade: new Animated.Value(0)
     }
 
     fetchCryptoData = () => {
@@ -40,6 +40,14 @@ class Panel extends React.Component {
   
     componentDidMount() {
       this.fetchCryptoData()
+
+      Animated.timing(
+        this.state.fade,
+        {
+          toValue: 1,
+          duration: 1500,
+        }
+      ).start()
     }
 
     componentDidUpdate(prevProps){
@@ -52,9 +60,9 @@ class Panel extends React.Component {
     }
     
     render() {
-      
+      let { fade } = this.state
       return(
-        <View style={styles.wrapper}>
+        <Animated.View style={[styles.wrapper, {opacity: fade}]}>
           <View style={styles.header}>
             <Text style={styles.textSize}>Information</Text>
           </View>
@@ -72,7 +80,7 @@ class Panel extends React.Component {
           >
             <Text style={styles.textSize}>Next</Text>
           </VrButton>
-        </View>
+        </Animated.View>
       );
     }
 }
